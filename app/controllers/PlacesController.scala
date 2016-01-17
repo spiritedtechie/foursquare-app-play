@@ -2,6 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
+import exceptions.PlacesRetrievalException
 import models.{Place, PlacesCriteria}
 import play.api.Play.current
 import play.api.data.Form
@@ -23,6 +24,27 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
     mapping("near" -> nonEmptyText)(PlacesCriteria.apply)(PlacesCriteria.unapply)
   )
 
+  private val handleFailure = (t: Throwable) =>
+    InternalServerError(views.html.places_search_failed(t.getMessage))
+
+  private val handleSuccess = (c: PlacesCriteria, p: Option[Seq[Place]]) =>
+    Ok(views.html.places_results(p)).withCookies(Cookie("near", c.near))
+
+  private def findPlacesWithTimeout(searchCriteria: PlacesCriteria)
+                                   (handleSuccess: (PlacesCriteria, Option[Seq[Place]]) => Result)
+                                   (handleFailure: Throwable => Result): Future[Result] = {
+
+    val placesFuture = placesService.findPlacesNear(searchCriteria.near)
+    val timeoutFuture = timeout("Fetching places timed out", 5.second)
+
+    firstCompletedOf(Seq(placesFuture, timeoutFuture)).map {
+      case places: Option[Seq[Place]] => handleSuccess(searchCriteria, places)
+      case t: String => handleFailure(new PlacesRetrievalException(t))
+    }.recover {
+      case t: Throwable => handleFailure(t)
+    }
+  }
+
   def index = Action { request =>
     Ok(views.html.places_index(searchForm.fillAndValidate(PlacesCriteria("London"))))
   }
@@ -30,19 +52,7 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
   val search = Action.async { implicit request =>
     searchForm.bindFromRequest.fold(
       formWithErrors => Future(BadRequest(views.html.places_index(formWithErrors))),
-      searchCriteria => {
-        val placesFuture = placesService.findPlacesNear(searchCriteria.near)
-        val timeoutFuture = timeout("Fetching places timed out", 5.second)
-
-        val firstCompleted = firstCompletedOf(Seq(placesFuture, timeoutFuture))
-
-        firstCompleted.map {
-          case p: Option[Seq[Place]] => Ok(views.html.places_results(p))
-          case t: String => InternalServerError(views.html.places_search_failed(t))
-        }.recover {
-          case t: Throwable => InternalServerError(views.html.places_search_failed(t.getMessage))
-        }
-      }
+      searchCriteria => findPlacesWithTimeout(searchCriteria)(handleSuccess)(handleFailure)
     )
   }
 
