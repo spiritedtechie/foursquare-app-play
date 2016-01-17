@@ -1,7 +1,9 @@
 package controllers
 
-import play.api._
+import play.api.Play.current
+import play.api.i18n.Messages.Implicits._
 import play.api.mvc._
+
 
 class Application extends Controller {
 
