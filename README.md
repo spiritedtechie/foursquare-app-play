@@ -23,18 +23,18 @@ It is built using the Play Framework, utilising the MVC pattern and Bootstrap 3 
 
 # Setup
 
-- Install activator using Homebrew
-    brew install typesafe-activator
-- Ensure Java 8 SDK is installed and set as JAVA_HOME
-    export JAVA_HOME=/location
-- Run the tests (from the project root)
-    activator test
-- Run a specific test
-    activator "test-only BrowserFunctionalSpec"
-- Run the application in auto-compile mode
-    activator run
-- Create a distribution zip for the application
-    sbt universal:packageBin
+- Install activator using Homebrew:
+    **brew install typesafe-activator**
+- Ensure Java 8 SDK is installed and set as JAVA_HOME:
+    **export JAVA_HOME=/location**
+- Run the tests (from the project root):
+    **activator test**
+- Run a specific test:
+    **activator "test-only BrowserFunctionalSpec"**
+- Run the application in auto-compile mode:
+    **activator run**
+- Create a distribution zip for the application:
+    **sbt universal:packageBin**
 
 # Executable Distribution
 
@@ -43,22 +43,18 @@ There is a distribution zip file in the project root which contains a runnable a
 - Unzip the zip
 - Again, ensure Java 8 is set
 - Run from the root folder:
-    ./bin/foursquare-search-play
+    **./bin/foursquare-search-play**
 - Open browser to:
-    http://localhost:9000
+    **http://localhost:9000**
 
 # Testing
 
 The tests consist of unit/integration tests and end to end functional tests.
 
-- Controllers
-These have tests which mocks out the service using Mockito
-- Views
-Have isolated unit tests to check that they load/parse correctly
-- Service
-The Foursquare adaptor service uses a mock web service to mock the Foursquare API
-- End to End
-There are tests for the application from the routes, and separate browser based tests (Selenium based).
+- Controllers - These have tests which mocks out the service using Mockito
+- Views - Have isolated unit tests to check that they load/parse correctly
+- Service - The Foursquare adaptor service uses a mock web service to mock the Foursquare API
+- End to End - There are tests for the application from the routes, and separate browser based tests (Selenium based).
 Browser based tests can tend to more fragile, hence the route tests serve as API level tests which are much more stable.
 
 # Approach Taken
