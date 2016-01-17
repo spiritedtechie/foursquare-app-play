@@ -1,5 +1,7 @@
 package controllers
 
+import java.net.URLDecoder._
+import java.net.URLEncoder._
 import javax.inject.Inject
 
 import exceptions.PlacesRetrievalException
@@ -15,9 +17,14 @@ import services.PlacesService
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.Future._
-import scala.concurrent.duration._
+import scala.concurrent.duration._;
+
 
 class PlacesController @Inject()(placesService: PlacesService) extends Controller {
+
+  private val `UTF-8` = "UTF-8"
+
+  private val defaultSearch = "London"
 
   private val nearCookieKey = "near"
 
@@ -30,8 +37,9 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
   private val handleFailure = (t: Throwable) =>
     InternalServerError(views.html.places_search_failed(t.getMessage))
 
-  private val handleSuccess = (c: PlacesCriteria, p: Option[Seq[Place]]) =>
-    Ok(views.html.places_results(p)).withCookies(Cookie(nearCookieKey, c.near))
+  private val handleSuccess = (c: PlacesCriteria, p: Option[Seq[Place]]) => {
+    Ok(views.html.places_results(p)).withCookies(Cookie(nearCookieKey, encode(c.near, `UTF-8`)))
+  }
 
   private def findPlacesUsingTimeout(getPlaces: PlacesCriteria => Future[Option[Seq[Place]]], searchCriteria: PlacesCriteria)
                                     (handleSuccess: (PlacesCriteria, Option[Seq[Place]]) => Result)
@@ -47,7 +55,7 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
   }
 
   def index = Action { request =>
-    val previousSearch = request.cookies.get(nearCookieKey).map(_.value).getOrElse("London")
+    val previousSearch = request.cookies.get(nearCookieKey).map(c => decode(c.value, `UTF-8`)).getOrElse(defaultSearch)
     Ok(views.html.places_index(searchForm.fillAndValidate(PlacesCriteria(previousSearch))))
   }
 

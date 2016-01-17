@@ -65,6 +65,12 @@ class PlacesControllerSpec extends PlaySpecification with Results with Mockito {
 
       contentAsString(result) must contain("<input type=\"text\" id=\"near\" name=\"near\" value=\"Manchester\" />")
     }
+
+    "populate places index view with previous search if cookie (encoded value)" in new WithApplication() {
+      val result = new PlacesController(mockService).index(FakeRequest().withCookies(Cookie("near", "Camden+Town")))
+
+      contentAsString(result) must contain("<input type=\"text\" id=\"near\" name=\"near\" value=\"Camden Town\" />")
+    }
   }
 
   "Places search happy path" should {
@@ -94,6 +100,13 @@ class PlacesControllerSpec extends PlaySpecification with Results with Mockito {
       val result = new PlacesController(mockService).search(FakeRequest().withFormUrlEncodedBody("near" -> "Daventry"))
 
       cookies(result).get("near") must beEqualTo(Some(Cookie("near", "Daventry")))
+    }
+
+    "set cookie with entered search encoded if needed" in new WithApplication {
+
+      val result = new PlacesController(mockService).search(FakeRequest().withFormUrlEncodedBody("near" -> "Camden Town"))
+
+      cookies(result).get("near") must beEqualTo(Some(Cookie("near", "Camden+Town")))
     }
   }
 
