@@ -10,4 +10,6 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /places                     controllers.PlacesController.index
 
+GET     /places/search              controllers.PlacesController.index
+
 POST    /places/search              controllers.PlacesController.search

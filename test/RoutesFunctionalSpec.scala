@@ -36,5 +36,12 @@ class RoutesFunctionalSpec extends Specification {
       status(result) must equalTo(OK)
       contentAsString(result) must contain("Places Search Results")
     }
+
+    "route to places index when GET /places/search" in new WithApplication {
+      val result = route(FakeRequest(GET, "/places/search")).get
+
+      status(result) must equalTo(OK)
+      contentAsString(result) must contain("Search For Places")
+    }
   }
 }
