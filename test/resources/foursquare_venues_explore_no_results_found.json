@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "code": 400,
+    "errorType": "failed_geocode",
+    "errorDetail": "Couldn't geocode param near: jj",
+    "requestId": "569a9621498e625c90b78377"
+  },
+  "notifications": [
+    {
+      "type": "notificationTray",
+      "item": {
+        "unreadCount": 0
+      }
+    }
+  ],
+  "response": {}
+}

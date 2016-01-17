@@ -8,8 +8,8 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import services.PlacesService
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configuration) extends PlacesService {
@@ -47,11 +47,25 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
 
     request.get().map {
       response => {
-        val d = ((response.json \ "response" \ "groups")(0) \ "items").validate[Seq[Place]]
-        d match {
-          case s: JsSuccess[Seq[Place]] => Some(s.value)
-          case e: JsError => ???
+
+        val codeResult = (response.json \ "meta" \ "code").toOption
+
+        codeResult match {
+          case Some(JsNumber(code)) if code == 200 => {
+
+            val d = ((response.json \ "response" \ "groups")(0) \ "items").validate[Seq[Place]]
+
+            d match {
+              case s: JsSuccess[Seq[Place]] => Some(s.value)
+              case e: JsError => ???
+            }
+          }
+
+          case Some(JsNumber(code)) if code == 400 => None
+
+          case _ => ???
         }
+
       }
     }
   }

@@ -41,4 +41,15 @@ class PlacesAdaptorFoursquareSpec(env: Env) extends PlaySpecification {
       }
     }
   }
+
+  "findPlacesNear no results response from Foursquare" should {
+    "should return no places" in {
+
+      withPlacesAdaptorForFoursquare("foursquare_venues_explore_no_results_found.json") {
+        adaptor =>
+          val result = adaptor.findPlacesNear("London")
+          result must beEqualTo(None).awaitFor(3 seconds)
+      }
+    }
+  }
 }
