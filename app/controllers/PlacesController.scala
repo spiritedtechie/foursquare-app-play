@@ -17,12 +17,13 @@ import scala.concurrent.Future
 import scala.concurrent.Future._
 import scala.concurrent.duration._
 
-
 class PlacesController @Inject()(placesService: PlacesService) extends Controller {
 
   private val searchForm = Form(
     mapping("near" -> nonEmptyText)(PlacesCriteria.apply)(PlacesCriteria.unapply)
   )
+
+  private val searchExecutor = (c: PlacesCriteria) => placesService.findPlacesNear(c.near)
 
   private val handleFailure = (t: Throwable) =>
     InternalServerError(views.html.places_search_failed(t.getMessage))
@@ -30,14 +31,12 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
   private val handleSuccess = (c: PlacesCriteria, p: Option[Seq[Place]]) =>
     Ok(views.html.places_results(p)).withCookies(Cookie("near", c.near))
 
-  private def findPlacesWithTimeout(searchCriteria: PlacesCriteria)
-                                   (handleSuccess: (PlacesCriteria, Option[Seq[Place]]) => Result)
-                                   (handleFailure: Throwable => Result): Future[Result] = {
-
-    val placesFuture = placesService.findPlacesNear(searchCriteria.near)
-    val timeoutFuture = timeout("Fetching places timed out", 5.second)
-
-    firstCompletedOf(Seq(placesFuture, timeoutFuture)).map {
+  private def findPlacesUsingTimeout(getPlaces: PlacesCriteria => Future[Option[Seq[Place]]], searchCriteria: PlacesCriteria)
+                                    (handleSuccess: (PlacesCriteria, Option[Seq[Place]]) => Result)
+                                    (handleFailure: Throwable => Result): Future[Result] = {
+    firstCompletedOf {
+      Seq(getPlaces(searchCriteria), timeout("Fetching places timed out", 5.second))
+    }.map {
       case places: Option[Seq[Place]] => handleSuccess(searchCriteria, places)
       case t: String => handleFailure(new PlacesRetrievalException(t))
     }.recover {
@@ -49,10 +48,10 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
     Ok(views.html.places_index(searchForm.fillAndValidate(PlacesCriteria("London"))))
   }
 
-  val search = Action.async { implicit request =>
+  def search = Action.async { implicit request =>
     searchForm.bindFromRequest.fold(
       formWithErrors => Future(BadRequest(views.html.places_index(formWithErrors))),
-      searchCriteria => findPlacesWithTimeout(searchCriteria)(handleSuccess)(handleFailure)
+      criteria => findPlacesUsingTimeout(searchExecutor, criteria)(handleSuccess)(handleFailure)
     )
   }
 
