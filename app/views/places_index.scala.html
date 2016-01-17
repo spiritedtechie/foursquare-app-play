@@ -3,6 +3,11 @@
 @main("Search For Places") {
     <div class="jumbotron">
         <h2>Enter somewhere to find places near it!</h2>
-
+        <div>
+        @helper.form(action = routes.PlacesController.search) {
+            @helper.inputText(searchForm("near"))
+            <input id="search-submit" type="submit" class="btn btn-primary btn-lg" value='Submit'>
+            }
+        </div>
     </div>
 }

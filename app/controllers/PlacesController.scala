@@ -17,4 +17,8 @@ class PlacesController extends Controller {
     Ok(views.html.places_index(searchForm.fillAndValidate(PlacesCriteria("London"))))
   }
 
+  val search = Action.async { implicit request =>
+    ???
+  }
+
 }
