@@ -3,7 +3,7 @@ package controllers
 import _root_.exceptions.PlacesRetrievalException
 import models.Place
 import org.specs2.mock.Mockito
-import play.api.mvc.Results
+import play.api.mvc.{Cookie, Results}
 import play.api.test._
 import services.PlacesService
 
@@ -53,6 +53,18 @@ class PlacesControllerSpec extends PlaySpecification with Results with Mockito {
 
       contentAsString(result) must contain("<title>Search For Places</title>")
     }
+
+    "populate places index view with default if no cookie" in new WithApplication() {
+      val result = new PlacesController(mockService).index(FakeRequest())
+
+      contentAsString(result) must contain("<input type=\"text\" id=\"near\" name=\"near\" value=\"London\" />")
+    }
+
+    "populate places index view with previous search if cookie" in new WithApplication() {
+      val result = new PlacesController(mockService).index(FakeRequest().withCookies(Cookie("near", "Manchester")))
+
+      contentAsString(result) must contain("<input type=\"text\" id=\"near\" name=\"near\" value=\"Manchester\" />")
+    }
   }
 
   "Places search happy path" should {
@@ -75,6 +87,13 @@ class PlacesControllerSpec extends PlaySpecification with Results with Mockito {
       val result = new PlacesController(mockService).search(FakeRequest().withFormUrlEncodedBody("near" -> "Daventry"))
 
       contentAsString(result) must contain("Places Search Results")
+    }
+
+    "set cookie with entered search" in new WithApplication {
+
+      val result = new PlacesController(mockService).search(FakeRequest().withFormUrlEncodedBody("near" -> "Daventry"))
+
+      cookies(result).get("near") must beEqualTo(Some(Cookie("near", "Daventry")))
     }
   }
 

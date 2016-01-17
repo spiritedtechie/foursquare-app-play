@@ -19,6 +19,8 @@ import scala.concurrent.duration._
 
 class PlacesController @Inject()(placesService: PlacesService) extends Controller {
 
+  private val nearCookieKey = "near"
+
   private val searchForm = Form(
     mapping("near" -> nonEmptyText)(PlacesCriteria.apply)(PlacesCriteria.unapply)
   )
@@ -29,7 +31,7 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
     InternalServerError(views.html.places_search_failed(t.getMessage))
 
   private val handleSuccess = (c: PlacesCriteria, p: Option[Seq[Place]]) =>
-    Ok(views.html.places_results(p)).withCookies(Cookie("near", c.near))
+    Ok(views.html.places_results(p)).withCookies(Cookie(nearCookieKey, c.near))
 
   private def findPlacesUsingTimeout(getPlaces: PlacesCriteria => Future[Option[Seq[Place]]], searchCriteria: PlacesCriteria)
                                     (handleSuccess: (PlacesCriteria, Option[Seq[Place]]) => Result)
@@ -45,7 +47,8 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
   }
 
   def index = Action { request =>
-    Ok(views.html.places_index(searchForm.fillAndValidate(PlacesCriteria("London"))))
+    val previousSearch = request.cookies.get(nearCookieKey).map(_.value).getOrElse("London")
+    Ok(views.html.places_index(searchForm.fillAndValidate(PlacesCriteria(previousSearch))))
   }
 
   def search = Action.async { implicit request =>
