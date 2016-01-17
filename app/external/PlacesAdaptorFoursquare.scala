@@ -16,9 +16,11 @@ import scala.util.{Failure, Success, Try}
 
 class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configuration) extends PlacesService {
 
-  private lazy val foursquareBaseUrl = configuration.getString("app.foursquare.baseUrl").getOrElse("Unknown")
-
+  private val unknown = "Unknown"
+  private lazy val foursquareBaseUrl = configuration.getString("app.foursquare.baseUrl").getOrElse(unknown)
   private lazy val foursquareExploreVenuesUrl = s"${foursquareBaseUrl}/v2/venues/explore"
+  private lazy val clientId = configuration.getString("app.foursquare.clientId").getOrElse(unknown)
+  private lazy val clientSecret = configuration.getString("app.foursquare.clientSecret").getOrElse(unknown)
 
   private implicit val locationReads: Reads[Location] =
     (
@@ -40,11 +42,13 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
       (JsPath \ "venue" \ "rating").readNullable[BigDecimal]
       )(Place.apply _)
 
-  private def requestForPopularVenuesNear(name: String)(url: String) =
+  private def requestForPopularVenuesNear(name: String)
+                                         (url: String)
+                                         (clientId: String, clientSecret: String) =
     ws.url(url)
       .withQueryString("near" -> name)
-      .withQueryString("client_id" -> "G13G1JGM3EA4FXORGPFBMPGBDSBMYMR1S1KYV2OAUF33PQV4")
-      .withQueryString("client_secret" -> "ADGLVHHMGASP4RRKDY0O2UKQZKUD1XLLJV505M0JJ3A4LSB2")
+      .withQueryString("client_id" -> s"${clientId}")
+      .withQueryString("client_secret" -> s"${clientSecret}")
       .withQueryString("v" -> "20150113")
 
   private val tryMapToPlaces = (json: JsValue) => Try {
@@ -64,8 +68,7 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
   }
 
   override def findPlacesNear(name: String): Future[Option[Seq[Place]]] = {
-
-    requestForPopularVenuesNear(name)(foursquareExploreVenuesUrl).get().map {
+    requestForPopularVenuesNear(name)(foursquareExploreVenuesUrl)(clientId, clientSecret).get().map {
       response => handlingJsonResponseCode(response.json)(tryMapToPlaces) match {
         case Success(p) => p
         case Failure(e) => throw e
