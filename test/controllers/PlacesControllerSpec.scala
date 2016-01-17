@@ -1,5 +1,6 @@
 package controllers
 
+import _root_.exceptions.PlacesRetrievalException
 import models.Place
 import org.specs2.mock.Mockito
 import play.api.mvc.Results
@@ -21,6 +22,12 @@ class PlacesControllerSpec extends PlaySpecification with Results with Mockito {
   def mockService = {
     val m = mock[PlacesService]
     m.findPlacesNear(any[String]) returns Future(Some(Seq(testPlace)))
+    m
+  }
+
+  def mockServiceWhichFails = {
+    val m = mock[PlacesService]
+    m.findPlacesNear(any[String]) returns Future.failed(new PlacesRetrievalException("Failure when finding places from backend"))
     m
   }
 
@@ -62,4 +69,20 @@ class PlacesControllerSpec extends PlaySpecification with Results with Mockito {
     }
   }
 
+  "Places search fails" should {
+
+    "return InternalServerError" in new WithApplication {
+
+      val result = new PlacesController(mockServiceWhichFails).search(FakeRequest().withFormUrlEncodedBody("near" -> "Daventry"))
+
+      status(result) must equalTo(INTERNAL_SERVER_ERROR)
+    }
+
+    "send to search failed view" in new WithApplication() {
+      val result = new PlacesController(mockServiceWhichFails).search(FakeRequest().withFormUrlEncodedBody("near" -> "Daventry"))
+
+      contentAsString(result) must contain("Search Failed")
+      contentAsString(result) must contain("Failure when finding places from backend")
+    }
+  }
 }

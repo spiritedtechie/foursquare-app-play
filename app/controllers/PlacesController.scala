@@ -9,8 +9,8 @@ import play.api.data.Forms._
 import play.api.i18n.Messages.Implicits._
 import play.api.mvc._
 import services.PlacesService
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class PlacesController @Inject()(placesService: PlacesService) extends Controller {
@@ -28,7 +28,9 @@ class PlacesController @Inject()(placesService: PlacesService) extends Controlle
       formWithErrors => Future(BadRequest(views.html.places_index(formWithErrors))),
       searchCriteria => {
         val placesFuture = placesService.findPlacesNear(searchCriteria.near)
-        placesFuture.map { p => Ok(views.html.places_results(p)) }
+        placesFuture.map { p => Ok(views.html.places_results(p)) }.recover {
+          case t: Throwable => InternalServerError(views.html.places_search_failed(t.getMessage))
+        }
       }
     )
   }
