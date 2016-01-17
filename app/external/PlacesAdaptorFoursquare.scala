@@ -37,6 +37,21 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
       (JsPath \ "venue" \ "rating").readNullable[BigDecimal]
       )(Place.apply _)
 
+  private def handlingJsonResponseCode(json: JsValue) = {
+    (json \ "meta" \ "code").toOption match {
+      case Some(JsNumber(code)) if code == 200 => {
+        val d = ((json \ "response" \ "groups")(0) \ "items").validate[Seq[Place]]
+
+        d match {
+          case s: JsSuccess[Seq[Place]] => Some(s.value)
+          case e: JsError => throw new PlacesRetrievalException("Failure when parsing data from Foursquare")
+        }
+      }
+      case Some(JsNumber(code)) if code == 400 => None
+      case _ => throw new PlacesRetrievalException("Failure when finding places from Foursquare")
+    }
+  }
+
   override def findPlacesNear(name: String): Future[Option[Seq[Place]]] = {
 
     val request =
@@ -46,28 +61,6 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
         .withQueryString("client_secret" -> "ADGLVHHMGASP4RRKDY0O2UKQZKUD1XLLJV505M0JJ3A4LSB2")
         .withQueryString("v" -> "20150113")
 
-    request.get().map {
-      response => {
-
-        val codeResult = (response.json \ "meta" \ "code").toOption
-
-        codeResult match {
-          case Some(JsNumber(code)) if code == 200 => {
-
-            val d = ((response.json \ "response" \ "groups")(0) \ "items").validate[Seq[Place]]
-
-            d match {
-              case s: JsSuccess[Seq[Place]] => Some(s.value)
-              case e: JsError => throw new PlacesRetrievalException("Failure when parsing data from Foursquare")
-            }
-          }
-
-          case Some(JsNumber(code)) if code == 400 => None
-
-          case _ => throw new PlacesRetrievalException("Failure when finding places from Foursquare")
-        }
-
-      }
-    }
+    request.get().map { response => handlingJsonResponseCode(response.json) }
   }
 }
