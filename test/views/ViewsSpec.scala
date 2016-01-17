@@ -36,4 +36,11 @@ class ViewsSpec extends PlaySpecification with Mockito {
     contentAsString(html) must contain("Results Found (2)")
   }
 
+  "render search failed template" in new WithApplication() {
+    val html = views.html.places_search_failed("some failure reason")
+
+    contentAsString(html) must contain("Search Failed")
+    contentAsString(html) must contain("some failure reason")
+  }
+
 }

@@ -1,0 +1,11 @@
+@(reason: String)(implicit messages: Messages)
+
+@main("Search Failed") {
+    <h2>Search Failed</h2>
+
+    <div>
+        <b>The search you provided failed for the following reason:</b>
+        <br/><br/>
+        <p>@reason</p>
+    </div>
+}
