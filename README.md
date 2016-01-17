@@ -45,7 +45,7 @@ There is a distribution zip file in the project root which contains a runnable a
 - Run from the root folder:
     **./bin/foursquare-search-play**
 - Open browser to:
-    **(http://localhost:9000)**
+    **[http://localhost:9000](http://localhost:9000)**
 
 # Testing
 
@@ -86,9 +86,9 @@ errors were less likely to occur dynamically, and code could be refactored using
 As a side note, the Play framework is a 'reactive' framework that incorporates Futures, Actors and a non-blocking web server.
 Therefore, it is suitable platform for growing the application further into something that is production and scale worthy.
 
-
-
-
+# Screenshots
+![ScreenShot Index](https://raw.githubusercontent.com/spiritedtechie/foursquare-app-play/master/search_index.png)
+![ScreenShot Results](https://raw.githubusercontent.com/spiritedtechie/foursquare-app-play/master/search_results.png)
 
 
 
