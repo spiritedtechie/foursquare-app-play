@@ -1,0 +1,306 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "569a7e11498ee123cda0c16b"
+  },
+  "notifications": [
+    {
+      "type": "notificationTray",
+      "item": {
+        "unreadCount": 0
+      }
+    }
+  ],
+  "response": {
+    "suggestedFilters": {
+      "header": "Tap to show:",
+      "filters": [
+        {
+          "name": "Open now",
+          "key": "openNow"
+        }
+      ]
+    },
+    "geocode": {
+      "what": "",
+      "where": "camden",
+      "center": {
+        "lat": 51.54281,
+        "lng": -0.15942
+      },
+      "displayString": "Camden, Greater London, United Kingdom",
+      "cc": "GB",
+      "geometry": {
+        "bounds": {
+          "ne": {
+            "lat": 51.57297897338867,
+            "lng": -0.10534992069005966
+          },
+          "sw": {
+            "lat": 51.51264953613281,
+            "lng": -0.21350136399269104
+          }
+        }
+      },
+      "longId": "72057594041261074"
+    },
+    "headerLocation": "Camden",
+    "headerFullLocation": "Camden",
+    "headerLocationGranularity": "city",
+    "totalResults": 248,
+    "suggestedBounds": {
+      "ne": {
+        "lat": 51.56664587087192,
+        "lng": -0.09130747443018382
+      },
+      "sw": {
+        "lat": 51.49785562512177,
+        "lng": -0.20260288216999123
+      }
+    },
+    "groups": [
+      {
+        "type": "Recommended Places",
+        "name": "recommended",
+        "items": [
+          {
+            "reasons": {
+              "count": 0,
+              "items": [
+                {
+                  "summary": "This spot is popular",
+                  "type": "general",
+                  "reasonName": "globalInteractionReason"
+                }
+              ]
+            },
+            "venue": {
+              "id": "4ac518cef964a5201aa620e3",
+              "name": "Hampstead Heath",
+              "contact": {
+                "phone": "02073323322",
+                "formattedPhone": "020 7332 3322",
+                "twitter": "CityCorpHeath"
+              },
+              "location": {
+                "address": "E Heath Rd",
+                "lat": 51.56351904151964,
+                "lng": -0.16839981079101562,
+                "postalCode": "NW3 2PT",
+                "cc": "GB",
+                "city": "London",
+                "state": "Greater London",
+                "country": "United Kingdom",
+                "formattedAddress": [
+                  "E Heath Rd",
+                  "London",
+                  "Greater London",
+                  "NW3 2PT"
+                ]
+              },
+              "categories": [
+                {
+                  "id": "4bf58dd8d48988d163941735",
+                  "name": "Park",
+                  "pluralName": "Parks",
+                  "shortName": "Park",
+                  "icon": {
+                    "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/park_",
+                    "suffix": ".png"
+                  },
+                  "primary": true
+                }
+              ],
+              "verified": false,
+              "stats": {
+                "checkinsCount": 11625,
+                "usersCount": 5440,
+                "tipCount": 103
+              },
+              "url": "http://www.cityoflondon.gov.uk/hampstead",
+              "rating": 9.7,
+              "ratingColor": "00B551",
+              "ratingSignals": 565,
+              "hours": {
+                "status": "Likely open",
+                "isOpen": true,
+                "isLocalHoliday": false
+              },
+              "photos": {
+                "count": 0,
+                "groups": []
+              },
+              "hereNow": {
+                "count": 3,
+                "summary": "3 people are here",
+                "groups": [
+                  {
+                    "type": "others",
+                    "name": "Other people here",
+                    "count": 3,
+                    "items": []
+                  }
+                ]
+              }
+            },
+            "tips": [
+              {
+                "id": "4d5a787a8e1059416c37dee1",
+                "createdAt": 1297774714,
+                "text": "Hampstead Heath was a favourite outing for Karl Marx and his family, and held a popular fair in the 19th century. Like the Guy Fawkes night bonfires held here, it oftern turned drunken and violent.",
+                "type": "user",
+                "canonicalUrl": "https://foursquare.com/item/4d5a787a8e1059416c37dee1",
+                "likes": {
+                  "count": 233,
+                  "groups": [],
+                  "summary": "233 likes"
+                },
+                "logView": true,
+                "todo": {
+                  "count": 67
+                },
+                "user": {
+                  "id": "25185561",
+                  "firstName": "HISTORY UK",
+                  "gender": "none",
+                  "photo": {
+                    "prefix": "https://irs2.4sqi.net/img/user/",
+                    "suffix": "/FHXBCRFJX2QS0T3K.jpg"
+                  },
+                  "type": "page"
+                }
+              }
+            ],
+            "referralId": "e-0-4ac518cef964a5201aa620e3-0"
+          },
+          {
+            "reasons": {
+              "count": 0,
+              "items": [
+                {
+                  "summary": "This spot is popular",
+                  "type": "general",
+                  "reasonName": "globalInteractionReason"
+                }
+              ]
+            },
+            "venue": {
+              "id": "4ac518d2f964a52026a720e3",
+              "name": "Hyde Park",
+              "contact": {
+                "facebook": "45011739518",
+                "facebookUsername": "HydeParkUK",
+                "facebookName": "Hyde Park"
+              },
+              "location": {
+                "address": "Serpentine Rd",
+                "lat": 51.507460346127864,
+                "lng": -0.16213417053222656,
+                "postalCode": "W2 2TP",
+                "cc": "GB",
+                "city": "London",
+                "state": "Greater London",
+                "country": "United Kingdom",
+                "formattedAddress": [
+                  "Serpentine Rd",
+                  "Hyde Park",
+                  "Greater London",
+                  "W2 2TP"
+                ]
+              },
+              "categories": [
+                {
+                  "id": "4bf58dd8d48988d163941735",
+                  "name": "Park",
+                  "pluralName": "Parks",
+                  "shortName": "Park",
+                  "icon": {
+                    "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/park_",
+                    "suffix": ".png"
+                  },
+                  "primary": true
+                }
+              ],
+              "verified": false,
+              "stats": {
+                "checkinsCount": 95211,
+                "usersCount": 56445,
+                "tipCount": 645
+              },
+              "url": "http://www.royalparks.org.uk/parks/hyde-park",
+              "rating": 9.6,
+              "ratingColor": "00B551",
+              "ratingSignals": 4926,
+              "hours": {
+                "status": "Open until Midnight",
+                "isOpen": true,
+                "isLocalHoliday": false
+              },
+              "photos": {
+                "count": 0,
+                "groups": []
+              },
+              "storeId": "",
+              "hereNow": {
+                "count": 9,
+                "summary": "9 people are here",
+                "groups": [
+                  {
+                    "type": "others",
+                    "name": "Other people here",
+                    "count": 9,
+                    "items": []
+                  }
+                ]
+              }
+            },
+            "flags": {
+              "outsideRadius": true
+            },
+            "tips": [
+              {
+                "id": "51bde126498e9198c22500b0",
+                "createdAt": 1371398438,
+                "text": "ذكريات أيام الطفولة ❤🏃",
+                "type": "user",
+                "canonicalUrl": "https://foursquare.com/item/51bde126498e9198c22500b0",
+                "photo": {
+                  "id": "51bde133498e7e9472f22566",
+                  "createdAt": 1371398451,
+                  "source": {
+                    "name": "Foursquare for iOS",
+                    "url": "https://foursquare.com/download/#/iphone"
+                  },
+                  "prefix": "https://irs0.4sqi.net/img/general/",
+                  "suffix": "/45761123_Tb8IlAhlHlLoS_UIHbfJoxvKFZjRLqz_Ih-hMOr7m-M.jpg",
+                  "width": 1920,
+                  "height": 1440
+                },
+                "photourl": "https://irs0.4sqi.net/img/general/original/45761123_Tb8IlAhlHlLoS_UIHbfJoxvKFZjRLqz_Ih-hMOr7m-M.jpg",
+                "likes": {
+                  "count": 305,
+                  "groups": [],
+                  "summary": "305 likes"
+                },
+                "logView": true,
+                "todo": {
+                  "count": 6
+                },
+                "user": {
+                  "id": "45761123",
+                  "firstName": "Saleh ALRajhi",
+                  "gender": "male",
+                  "photo": {
+                    "prefix": "https://irs1.4sqi.net/img/user/",
+                    "suffix": "/45761123-W2HN1T01GICEEHZX.jpg"
+                  }
+                }
+              }
+            ],
+            "referralId": "e-0-4ac518d2f964a52026a720e3-1"
+          }
+        ]
+      }
+    ]
+  }
+}
