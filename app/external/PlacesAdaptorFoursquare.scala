@@ -3,6 +3,7 @@ package external
 import javax.inject.Inject
 
 import models.{Contact, Location, Place}
+import play.api.Configuration
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
@@ -11,7 +12,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.concurrent.Future
 
-class PlacesAdaptorFoursquare @Inject()(ws: WSClient, baseUrl: String) extends PlacesService {
+class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configuration) extends PlacesService {
+
+  private lazy val foursquareBaseUrl = configuration.getString("app.foursquare.baseUrl").getOrElse("Unknown")
 
   private implicit val locationReads: Reads[Location] =
     (
@@ -36,7 +39,7 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, baseUrl: String) extends P
   override def findPlacesNear(name: String): Future[Option[Seq[Place]]] = {
 
     val request =
-      ws.url(s"${baseUrl}/v2/venues/explore")
+      ws.url(s"${foursquareBaseUrl}/v2/venues/explore")
         .withQueryString("near" -> name)
         .withQueryString("client_id" -> "G13G1JGM3EA4FXORGPFBMPGBDSBMYMR1S1KYV2OAUF33PQV4")
         .withQueryString("client_secret" -> "ADGLVHHMGASP4RRKDY0O2UKQZKUD1XLLJV505M0JJ3A4LSB2")

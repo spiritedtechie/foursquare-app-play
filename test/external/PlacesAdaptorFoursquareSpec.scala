@@ -2,6 +2,7 @@ package external
 
 import models.{Contact, Location, Place}
 import org.specs2.specification.core.Env
+import play.api.Configuration
 import play.api.mvc._
 import play.api.test._
 import play.core.server.Server
@@ -19,7 +20,9 @@ class PlacesAdaptorFoursquareSpec(env: Env) extends PlaySpecification {
     Server.withRouter() {
       case rh if rh.method == GET => Action(Results.Ok.sendResource(jsonFile))
     } { implicit port =>
-      WsTestClient.withClient { client => block(new PlacesAdaptorFoursquare(client, "")) }
+      WsTestClient.withClient { client =>
+        block(new PlacesAdaptorFoursquare(client, Configuration("app.foursquare.baseUrl" -> "")))
+      }
     }
   }
 
