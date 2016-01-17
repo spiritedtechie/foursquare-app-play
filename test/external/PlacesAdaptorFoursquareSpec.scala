@@ -10,8 +10,6 @@ import scala.concurrent.duration._
 
 class PlacesAdaptorFoursquareSpec(env: Env) extends PlaySpecification {
 
-  args(skipAll = true)
-
   implicit val ee = env.executionEnv
   implicit val ec = env.executionContext
 
@@ -21,7 +19,7 @@ class PlacesAdaptorFoursquareSpec(env: Env) extends PlaySpecification {
     Server.withRouter() {
       case rh if rh.method == GET => Action(Results.Ok.sendResource(jsonFile))
     } { implicit port =>
-      WsTestClient.withClient { client => block(new PlacesAdaptorFoursquare(client)) }
+      WsTestClient.withClient { client => block(new PlacesAdaptorFoursquare(client, "")) }
     }
   }
 
@@ -33,7 +31,7 @@ class PlacesAdaptorFoursquareSpec(env: Env) extends PlaySpecification {
         Place("Hyde Park", Some("http://www.royalparks.org.uk/parks/hyde-park"), Some(Location(Some("Serpentine Rd"), Some("London"), Some("United Kingdom"), Some("W2 2TP"))), Some(Contact(None)), Some(9.6))
       )
 
-      withPlacesAdaptorForFoursquare("foursquare_venues_expore_success.json") {
+      withPlacesAdaptorForFoursquare("foursquare_venues_explore_success.json") {
         adaptor =>
           val result = adaptor.findPlacesNear("London")
           result must beEqualTo(Some(expectedPlaces)).awaitFor(3 seconds)
