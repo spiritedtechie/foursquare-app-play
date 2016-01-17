@@ -31,6 +31,15 @@ class PlacesControllerSpec extends PlaySpecification with Results with Mockito {
     m
   }
 
+  def mockServiceWhichTimesOut = {
+    val m = mock[PlacesService]
+    m.findPlacesNear(any[String]) returns Future {
+      Thread.sleep(6000)
+      None
+    }
+    m
+  }
+
   "Places index" should {
 
     "return OK" in new WithApplication {
@@ -66,6 +75,23 @@ class PlacesControllerSpec extends PlaySpecification with Results with Mockito {
       val result = new PlacesController(mockService).search(FakeRequest().withFormUrlEncodedBody("near" -> "Daventry"))
 
       contentAsString(result) must contain("Places Search Results")
+    }
+  }
+
+  "Places search where search times out" should {
+
+    "return InternalServerError" in new WithApplication {
+
+      val result = new PlacesController(mockServiceWhichTimesOut).search(FakeRequest().withFormUrlEncodedBody("near" -> "Daventry"))
+
+      status(result) must equalTo(INTERNAL_SERVER_ERROR)
+    }
+
+    "send to search failed view" in new WithApplication() {
+      val result = new PlacesController(mockServiceWhichTimesOut).search(FakeRequest().withFormUrlEncodedBody("near" -> "Daventry"))
+
+      contentAsString(result) must contain("Search Failed")
+      contentAsString(result) must contain("Fetching places timed out")
     }
   }
 
