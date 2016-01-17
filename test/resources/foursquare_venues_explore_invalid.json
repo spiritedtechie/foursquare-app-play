@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "569a7e11498ee123cda0c16b"
+  },
+  "notifications": [
+    {
+      "type": "notificationTray",
+      "item": {
+        "unreadCount": 0
+      }
+    }
+  ],
+  "response": {
+    "suggestedFilters": {
+      "header": "Tap to show:",
+      "filters": [
+        {
+          "name": "Open now",
+          "key": "openNow"
+        }
+      ]
+    },
+    "geocode": {
+      "what": "",
+      "where": "camden",
+      "center": {
+        "lat": 51.54281,
+        "lng": -0.15942
+      },
+      "displayString": "Camden, Greater London, United Kingdom",
+      "cc": "GB",
+      "geometry": {
+        "bounds": {
+          "ne": {
+            "lat": 51.57297897338867,
+            "lng": -0.10534992069005966
+          },
+          "sw": {
+            "lat": 51.51264953613281,
+            "lng": -0.21350136399269104
+          }
+        }
+      },
+      "longId": "72057594041261074"
+    },
+    "headerLocation": "Camden",
+    "headerFullLocation": "Camden",
+    "headerLocationGranularity": "city",
+    "totalResults": 248,
+    "suggestedBounds": {
+      "ne": {
+        "lat": 51.56664587087192,
+        "lng": -0.09130747443018382
+      },
+      "sw": {
+        "lat": 51.49785562512177,
+        "lng": -0.20260288216999123
+      }
+    }
+  }
+}

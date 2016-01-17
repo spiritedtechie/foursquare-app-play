@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "code": 500,
+    "errorType": "other",
+    "errorDetail": "Bad things happening at Foursquare",
+    "requestId": "569a9b5c498e519bac98d290"
+  },
+  "response": {}
+}

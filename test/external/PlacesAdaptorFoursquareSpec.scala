@@ -1,5 +1,6 @@
 package external
 
+import exceptions.PlacesRetrievalException
 import models.{Contact, Location, Place}
 import org.specs2.specification.core.Env
 import play.api.Configuration
@@ -49,6 +50,28 @@ class PlacesAdaptorFoursquareSpec(env: Env) extends PlaySpecification {
         adaptor =>
           val result = adaptor.findPlacesNear("London")
           result must beEqualTo(None).awaitFor(3 seconds)
+      }
+    }
+  }
+
+  "findPlacesNear invalid json response from foursquare" should {
+    "should throw exception" in {
+
+      withPlacesAdaptorForFoursquare("foursquare_venues_explore_invalid.json") {
+        adaptor =>
+          val result = adaptor.findPlacesNear("London")
+          result must throwAn[PlacesRetrievalException].awaitFor(3 seconds)
+      }
+    }
+  }
+
+  "findPlacesNear error response from foursquare" should {
+    "should throw exception" in {
+
+      withPlacesAdaptorForFoursquare("foursquare_venues_explore_error.json") {
+        adaptor =>
+          val result = adaptor.findPlacesNear("London")
+          result must throwAn[PlacesRetrievalException].awaitFor(3 seconds)
       }
     }
   }

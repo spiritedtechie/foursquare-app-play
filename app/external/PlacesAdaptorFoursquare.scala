@@ -2,6 +2,7 @@ package external
 
 import javax.inject.Inject
 
+import exceptions.PlacesRetrievalException
 import models.{Contact, Location, Place}
 import play.api.Configuration
 import play.api.libs.functional.syntax._
@@ -57,13 +58,13 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
 
             d match {
               case s: JsSuccess[Seq[Place]] => Some(s.value)
-              case e: JsError => ???
+              case e: JsError => throw new PlacesRetrievalException("Failure when parsing data from Foursquare")
             }
           }
 
           case Some(JsNumber(code)) if code == 400 => None
 
-          case _ => ???
+          case _ => throw new PlacesRetrievalException("Failure when finding places from Foursquare")
         }
 
       }
