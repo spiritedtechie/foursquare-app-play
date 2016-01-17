@@ -41,20 +41,20 @@ It is built using the Play Framework, utilising the MVC pattern and Bootstrap 3 
 There is a distribution zip file in the project root which contains a runnable application
 
 - Unzip the zip
-- Again, ensure Java 8 is set
+- Ensure Java 8 is set
 - Run from the root folder:
     **./bin/foursquare-search-play**
 - Open browser to:
-    **http://localhost:9000**
+    **(http://localhost:9000)**
 
 # Testing
 
-The tests consist of unit/integration tests and end to end functional tests.
+The tests consist of unit/integration tests and end-to-end functional tests.
 
 - Controllers - These have tests which mocks out the service using Mockito
-- Views - Have isolated unit tests to check that they load/parse correctly
-- Service - The Foursquare adaptor service uses a mock web service to mock the Foursquare API
-- End to End - There are tests for the application from the routes, and separate browser based tests (Selenium based).
+- Views - Have isolated unit tests to check that the views load/parse correctly
+- Service - The Foursquare adaptor test uses a mock web service to mock the Foursquare API
+- End to End - There are tests from the routes, and separate browser-based tests (Selenium based).
 Browser based tests can tend to more fragile, hence the route tests serve as API level tests which are much more stable.
 
 # Approach Taken
@@ -76,14 +76,15 @@ refactoring took place to create smaller functions and use higher order function
 result in purer/cleaner functions, which can be more easily tested if needed.
 
 Next, some further scenarios were added to the PlacesController to support timeouts, and display to the user a suitable
-message. The controller was refactored to create smaller functions, and higher order functions where possible.
+message. The controller was refactored to create smaller functions, and higher order functions where possible, again to
+align with functional programming best practices.
 
-Finally cookies were incorporated to save the last search.
+Finally, cookies were incorporated to save the last search, so that the user can come back and just hit 'Submit'.
 
-Scala was used mostly because of recent familiarity, and also it is a strongly typed language and functional so
-errors were less likely to occur dynamically, and code could be refactored using functional pattern resulting in cleaner code.
+Scala was used mostly because of recent familiarity with it, and also it is a strongly typed language and functional so
+errors were less likely to occur dynamically, and code could be refactored using functional patterns resulting in clean code.
 As a side note, the Play framework is a 'reactive' framework that incorporates Futures, Actors and a non-blocking web server.
-Therefore it is suitable platform for growing the application further into something that is production and scale worthy.
+Therefore, it is suitable platform for growing the application further into something that is production and scale worthy.
 
 
 
