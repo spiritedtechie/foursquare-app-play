@@ -22,6 +22,10 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
   private lazy val clientId = configuration.getString("app.foursquare.clientId").getOrElse(unknown)
   private lazy val clientSecret = configuration.getString("app.foursquare.clientSecret").getOrElse(unknown)
 
+  /**
+   * The following are JSON read mappers and formatters which apply xpath like
+   * locators to JSON objects to apply to a model case class.
+   */
   private implicit val locationReads: Reads[Location] =
     (
       (JsPath \ "address").readNullable[String] and
@@ -42,14 +46,19 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
       (JsPath \ "venue" \ "rating").readNullable[BigDecimal]
       )(Place.apply _)
 
-  private def requestForPopularVenuesNear(name: String)
-                                         (url: String)
-                                         (clientId: String, clientSecret: String) =
-    ws.url(url)
-      .withQueryString("near" -> name)
-      .withQueryString("client_id" -> s"${clientId}")
-      .withQueryString("client_secret" -> s"${clientSecret}")
-      .withQueryString("v" -> "20150113")
+  private def foursquareRequest(url: String)
+                               (clientId: String, clientSecret: String)
+                               (additionalQueryParameters: (String, String)*) = {
+    val baseRequest = ws.url(url).withQueryString(
+      "client_id" -> s"${clientId}",
+      "client_secret" -> s"${clientSecret}",
+      "v" -> "20150113"
+    )
+
+    additionalQueryParameters.foldLeft(baseRequest) { (req, tuple) => req.withQueryString(tuple._1 -> tuple._2) }
+  }
+
+  private val requestForPopularVenuesNear = (near: String) => foursquareRequest(foursquareExploreVenuesUrl)(clientId, clientSecret)("near" -> near)
 
   private val tryMapToPlaces = (json: JsValue) => Try {
     ((json \ "response" \ "groups")(0) \ "items").validate[Seq[Place]] match {
@@ -68,7 +77,8 @@ class PlacesAdaptorFoursquare @Inject()(ws: WSClient, configuration: Configurati
   }
 
   override def findPlacesNear(name: String): Future[Option[Seq[Place]]] = {
-    requestForPopularVenuesNear(name)(foursquareExploreVenuesUrl)(clientId, clientSecret).get().map {
+
+    requestForPopularVenuesNear(name).get().map {
       response => handlingJsonResponseCode(response.json)(tryMapToPlaces) match {
         case Success(p) => p
         case Failure(e) => throw e

@@ -19,7 +19,6 @@ import scala.concurrent.Future
 import scala.concurrent.Future._
 import scala.concurrent.duration._;
 
-
 class PlacesController @Inject()(placesService: PlacesService) extends Controller {
 
   private val `UTF-8` = "UTF-8"
