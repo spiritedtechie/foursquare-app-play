@@ -9,7 +9,7 @@ This web application allows a user to find popular places near to a queried plac
 
 It is built using the Play Framework, utilising the MVC pattern and Bootstrap for presentation. 
 
-The purpose of this project was to find a simple problem which allowed me to explore some of the basics of the Play Framework.
+The purpose of this project was to solve a simple problem that allowed me to explore some of the basics of the Play Framework. It does not do much in terms of computation, just simply wrapping a particular Foursquare API with a web application.
 
 # Foursquare Integration
 
