@@ -1,10 +1,19 @@
 # Description
 
-This application is a "popular places search" web application that integrates against the Foursquare API.
-It is built using the Play Framework, utilising the MVC pattern and Bootstrap for presentation.
+This web application allows a user to find popular places near to a queried place. It shows the following data about each result:
 
-# Foursquare APIs
-The integration is against the Foursquare explore venues API:
+- Name
+- Address
+- Telephone
+- Rating
+
+It is built using the Play Framework, utilising the MVC pattern and Bootstrap for presentation. 
+
+The purpose of this project was to find a simple problem which allowed me to explore some of the basics of the Play Framework.
+
+# Foursquare Integration
+
+The search is against the Foursquare explore venues API, which provides the places results.
 
 https://developer.foursquare.com/docs/venues/explore
 
@@ -68,23 +77,21 @@ from Foursquare. An Foursquare adaptor implementation is then used specialise th
 encapsulation and decoupling.
 
 The approach was to focus on getting a working front-end as quickly (and incrementally) as possible to allow the presentation
-to be demonstrated by mocking out the Places data using a stub. Bootstrap was used to speed up the presentation / UX side of things.
-Play's MVC framework made this easy to do by separating the Model from the View and Controller side.
+to be demonstrated by mocking out the Places data using a stub service implementation. Bootstrap was used to speed up the presentation / UX side of things. Play's MVC framework made this easy to do by separating the Model from the View and Controller side, allowing it to be mocked easily.
 
-Once this was working, the focus was on getting the 'happy path' working in the Foursquare adaptor and hooked into the
-application dependency injection framework to further improve the demo. This provided real data to the UI, and something
+Once this was working, the focus was on getting the 'happy path' working in the Foursquare adaptor (against the Foursquare API) and hooked into the application dependency injection framework to further improve the demo. This provided real data to the UI, and something
 more meaningful to the user.
 
 Then, further TDD was used to drive out the other scenarios in the Foursquare adaptor e.g. failure, no results. Once this was complete,
 refactoring took place to create smaller, higher order functions to separate out the side effects and resulted in purer/cleaner functions, which can be more easily tested as needed.
 
-Next, some further scenarios were added to the PlacesController to support timeouts, and display to the user a suitable
+Next, some further scenarios were added to the PlacesController to support timeouts, and display to the user a suitable error
 message. The controller was refactored to create smaller functions, and higher order functions where possible, again to
 align with functional programming best practices.
 
 Finally, cookies were incorporated to save the last search, so that the user can come back and just hit 'Submit'.
 
-Scala was used mostly because of recent familiarity with it, and also because it is a strongly typed functional language. This resulted in cleaner code that is easy to refactor and maintain, and results in less runtime errors. As a side note, the Play framework is a 'reactive' framework that incorporates Futures, Actors and a non-blocking web server. Therefore, it is suitable platform for growing the application further into something that is production-ready and highly scalable.
+Scala was used mostly because of recent familiarity with it. Also it is a strongly typed functional language which resulted in cleaner code that is easy to refactor and maintain. As a side note, the Play framework is a 'reactive' framework that incorporates Futures, Actors and a non-blocking web server. Therefore, it is suitable platform for growing the application further into something that is production-ready and highly scalable.
 
 # Screenshots
 ![ScreenShot Index](https://raw.githubusercontent.com/spiritedtechie/foursquare-app-play/master/search_index.png)
