@@ -98,7 +98,7 @@ align with functional programming best practices.
 
 Finally, cookies were incorporated to save the last search, so that the user can come back and just hit 'Submit'.
 
-Scala was used mostly because of recent familiarity with it. Also it is a strongly typed functional language which resulted in cleaner code that is easy to refactor and maintain. As a side note, the Play framework is a 'reactive' framework that incorporates Futures, Actors and a non-blocking web server. Therefore, it is suitable platform for growing the application further into something that is production-ready and highly scalable.
+Scala & Play were used mostly because of recent familiarity and interest in it. Also it is a strongly-typed functional language which resulted in cleaner code that is easy to refactor and maintain. As a side note, the Play framework is a 'reactive' framework that incorporates Futures, Actors and a non-blocking web server. Therefore, it is suitable platform for growing the application further into something that is production-ready and highly scalable.
 
 # Screenshots
 ![ScreenShot Index](https://raw.githubusercontent.com/spiritedtechie/foursquare-app-play/master/search_index.png)
