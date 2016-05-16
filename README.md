@@ -9,7 +9,7 @@ This web application allows a user to find popular places near to a queried plac
 
 It is built using the Play Framework, utilising the MVC pattern and Bootstrap for presentation. 
 
-The purpose of this project was to solve a simple problem that allowed me to explore some of the basics of the Play Framework. It does not do much in terms of computation, just simply wrapping a particular Foursquare API with a web application.
+The purpose of this project was to solve a simple problem that allowed me to explore some of the basics of the Play Framework. It does not do much in terms of computation, just simply wrapping a Foursquare API with a web application.
 
 # Foursquare Integration
 
@@ -19,17 +19,25 @@ https://developer.foursquare.com/docs/venues/explore
 
 # Technologies Used
 
-- Scala 2.11
-- Play Framework 2.4
 - HTML / Javascript
 - Bootstrap 3
+- Scala 2.11.6
+- Sbt 0.13.8
+- Google Guice 4
+- Play Framework 2.4.6
+- Play JSON libraries
+- Play WS client
 - Testing using Specs2, Mockito and Selenium
 
-# Patterns and Techniques Used
+# Patterns Used
 
 - MVC
 - Adaptor
 - Dependency Injection
+
+# Techniques Used
+
+- SOLID
 - Functional Programming
 - OOD
 - TDD
@@ -62,13 +70,12 @@ There is a distribution zip file in the project root which contains a runnable a
 
 # Testing
 
-The tests consist of unit/integration tests and end-to-end functional tests.
+The tests consist of integration tests, and end-to-end functional tests.
 
-- Controllers - These have tests which mock out the service using Mockito
-- Views - Have isolated unit tests to check that the views load/parse correctly
-- Service - The Foursquare adaptor test uses a mock web service to mock the Foursquare API
-- End to End - There are tests from the routes, and separate browser-based tests (Selenium based)
-Browser based tests can tend to more fragile, hence the route tests serve as API level tests which are much more stable
+- Controllers - Have integration tests. PlacesService is mocked using Mockito.
+- Views - Have integration tests to check that the views load/parse correctly. The view data is mocked.
+- Service - Have integration tests to the remote API. A mock web service is used to mock the remote Foursquare API.
+- End to End - There are separate functional tests from the routes and from the browser (Selenium based). Browser-based tests tend to be more fragile, hence the route tests serve as API level tests which are much more stable.
 
 # Approach Taken
 
