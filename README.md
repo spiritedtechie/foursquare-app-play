@@ -7,9 +7,9 @@ This web application allows a user to find popular places near to a queried plac
 - Telephone
 - Rating
 
-It is built using the Play Framework, utilising the MVC pattern and Bootstrap for presentation. 
+It is built using the Play Framework, utilising the MVC pattern and Bootstrap for presentation. Play is a Reactive framework, utilising non-blocking IO, Futures and Actors - thus supporting high scalability out of the box.
 
-The purpose of this project was to solve a simple problem that allowed me to explore some of the basics of the Play Framework. It does not do much in terms of computation, just simply wrapping a Foursquare API with a web application. Play is a Reactive framework, utilising non-blocking IO, Future and Actors - thus supporting high scalability out of the box.
+The purpose of this project was to solve a simple problem that allowed me to explore some of the basics of the Play Framework. It does not do much in terms of computation, just simply wrapping a Foursquare API with a web application. 
 
 # Foursquare Integration
 
