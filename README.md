@@ -9,7 +9,7 @@ This web application allows a user to find popular places near to a queried plac
 
 It is built using the Play Framework, utilising the MVC pattern and Bootstrap for presentation. 
 
-The purpose of this project was to solve a simple problem that allowed me to explore some of the basics of the Play Framework. It does not do much in terms of computation, just simply wrapping a Foursquare API with a web application.
+The purpose of this project was to solve a simple problem that allowed me to explore some of the basics of the Play Framework. It does not do much in terms of computation, just simply wrapping a Foursquare API with a web application. Play is a Reactive framework, utilising non-blocking IO, Future and Actors - thus supporting high scalability out of the box.
 
 # Foursquare Integration
 
@@ -79,22 +79,15 @@ The tests consist of integration tests, and end-to-end functional tests.
 
 # Approach Taken
 
-The places search logic is hidden behind an interface (PlacesService) and a Place abstraction model to decouple the application
-from Foursquare. An Foursquare adaptor implementation is then used specialise this interface, hence providing the
-encapsulation and decoupling.
+The places search logic is hidden behind an interface (PlacesService) and a Place abstraction model to decouple the application from Foursquare. An Foursquare adaptor implementation is then used specialise this interface, hence providing the encapsulation and decoupling.
 
-The approach was to focus on getting a working front-end as quickly (and incrementally) as possible to allow the presentation
-to be demonstrated by mocking out the Places data using a stub service implementation. Bootstrap was used to speed up the presentation / UX side of things. Play's MVC framework made this easy to do by separating the Model from the View and Controller side, allowing it to be mocked easily.
+The approach was to focus on getting a working front-end as quickly (and incrementally) as possible to allow the presentation to be demonstrated by mocking out the Places data using a stub service implementation. Bootstrap was used to speed up the presentation / UX side of things. Play's MVC framework made this easy to do by separating the Model from the View and Controller side, allowing it to be mocked easily.
 
-Once this was working, the focus was on getting the 'happy path' working in the Foursquare adaptor (against the Foursquare API) and hooked into the application dependency injection framework to further improve the demo. This provided real data to the UI, and something
-more meaningful to the user.
+Once this was working, the focus was on getting the 'happy path' working in the Foursquare adaptor (against the Foursquare API) and hooked into the application dependency injection framework to further improve the demo. This provided real data to the UI, and something more meaningful to the user.
 
-Then, further TDD was used to drive out the other scenarios in the Foursquare adaptor e.g. failure, no results. Once this was complete,
-refactoring took place to create smaller, higher order functions to separate out the side effects and resulted in purer/cleaner functions, which can be more easily tested as needed.
+Then, further TDD was used to drive out the other scenarios in the Foursquare adaptor e.g. failure, no results. Once this was complete, refactoring took place to create smaller, higher order functions to separate out the side effects and resulted in purer/cleaner functions, which can be more easily tested as needed.
 
-Next, some further scenarios were added to the PlacesController to support timeouts, and display to the user a suitable error
-message. The controller was refactored to create smaller functions, and higher order functions where possible, again to
-align with functional programming best practices.
+Next, some further scenarios were added to the PlacesController to support timeouts, and display to the user a suitable error message. The controller was refactored to create smaller functions, and higher order functions where possible, again to align with functional programming best practices.
 
 Finally, cookies were incorporated to save the last search, so that the user can come back and just hit 'Submit'.
 
